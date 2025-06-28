@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Recrutamento com IA</title>
   <style>
     :root {
@@ -13,37 +13,81 @@
       --muted: #888;
       --radius: 10px;
     }
-
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.3s, color 0.3s;
-    }
-    header { background: var(--card); padding: 2rem 0; text-align: center; border-bottom: 1px solid #2c2c2c; }
-    h1 { margin: 0; font-size: 2rem; color: var(--accent); }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--card); padding: 2rem 1rem; text-align: center; border-bottom: 1px solid #2c2c2c; }
+    h1 { color: var(--accent); font-size: 2rem; }
     p { margin-top: 0.5rem; color: var(--muted); }
-    .container { max-width: 1200px; margin: auto; padding: 2rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
-    .card { background: var(--card); padding: 1.5rem; border-radius: var(--radius); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-    input, textarea, button { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: none; border-radius: var(--radius); }
-    input, textarea { background: #2a2a2a; color: var(--text); }
-    input[type="file"] { color: var(--text); background: none; }
-    button { background: var(--accent); color: white; cursor: pointer; transition: 0.3s; }
-    button:hover { background: #684fd8; }
-    #candidates-list .candidate-card { background: #2b2b2b; padding: 1rem; border-left: 4px solid var(--accent); border-radius: var(--radius); margin-top: 1rem; }
-    footer { text-align: center; font-size: 0.8rem; color: var(--muted); padding: 2rem 1rem; border-top: 1px solid #222; margin-top: 2rem; }
+
+    .container { max-width: 1200px; margin: auto; padding: 2rem 1rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
+    .card {
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: var(--radius);
+    }
+
+    input, textarea {
+      background: #2a2a2a;
+      color: var(--text);
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #684fd8;
+    }
+
+    #candidates-list .candidate-card {
+      background: #2b2b2b;
+      padding: 1rem;
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 2rem 1rem;
+      border-top: 1px solid #222;
+    }
+
+    canvas {
+      max-width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.5rem; }
+      .card { padding: 1rem; }
+      input, textarea, button { padding: 0.7rem; font-size: 0.9rem; }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
       <h1>Recrutador Inteligente</h1>
-      <p>Sistema de Recrutamento com IA — Avaliação e Recomendação Automática</p>
+      <p>Sistema de Recrutamento com IA — Totalmente Responsivo</p>
     </div>
   </header>
+
   <main class="container">
     <div class="grid">
       <section class="card">
@@ -51,75 +95,75 @@
         <form id="candidate-form">
           <input type="text" id="name" placeholder="Nome completo" required />
           <input type="email" id="email" placeholder="Email" required />
-          <input type="password" id="password" placeholder="Crie uma senha (para edição e exclusão)" required />
-          <input type="url" id="linkedin" pattern="https://(www\.)?linkedin\.com/.*" placeholder="Link do perfil LinkedIn (https://www.linkedin.com/in/...)" required />
-          <input type="text" id="skills" placeholder="Habilidades (ex: Python, React)" required />
+          <input type="password" id="password" placeholder="Senha (para editar/apagar)" required />
+          <input type="url" id="linkedin" placeholder="Link do LinkedIn" pattern="https://(www\.)?linkedin\.com/.*" required />
+          <input type="text" id="skills" placeholder="Habilidades (ex: JavaScript, UX)" required />
           <textarea id="response" placeholder="Por que devemos te contratar?" required></textarea>
-          <label for="cv">Currículo (PDF ou imagem)</label>
-          <input type="file" id="cv" accept=".pdf,.png,.jpg,.jpeg" required />
-          <button type="submit">Cadastrar Candidato</button>
+          <input type="file" id="cv" accept=".pdf,.jpg,.jpeg,.png" required />
+          <button type="submit">Cadastrar</button>
         </form>
       </section>
+
       <section class="card">
-        <h2>Recomendados</h2>
+        <h2>Recomendações</h2>
         <input type="text" id="search" placeholder="Buscar por habilidade..." />
-        <div id="candidates-list" class="list"></div>
-        <canvas id="skillsChart" style="margin-top: 1rem; max-height: 300px;"></canvas>
+        <div id="candidates-list"></div>
+        <canvas id="skillsChart" style="margin-top: 1rem;"></canvas>
         <button id="exportCsv">Exportar CSV</button>
       </section>
     </div>
   </main>
+
   <footer>
     <p>© 2025 Sistema IA de Recrutamento — Edvanio Milagre</p>
   </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const form = document.getElementById('candidate-form');
-    const list = document.getElementById('candidates-list');
-    const search = document.getElementById('search');
-    const cvInput = document.getElementById('cv');
-    const chartCanvas = document.getElementById('skillsChart');
-    const exportBtn = document.getElementById('exportCsv');
+    const form = document.getElementById("candidate-form");
+    const list = document.getElementById("candidates-list");
+    const search = document.getElementById("search");
+    const cvInput = document.getElementById("cv");
+    const chartCanvas = document.getElementById("skillsChart");
+    const exportBtn = document.getElementById("exportCsv");
 
-    let cvFileBase64 = "";
+    let cvBase64 = "";
 
     cvInput.addEventListener("change", () => {
       const file = cvInput.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (e) => { cvFileBase64 = e.target.result; };
+        reader.onload = (e) => {
+          cvBase64 = e.target.result;
+        };
         reader.readAsDataURL(file);
       }
     });
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
-      const linkedin = document.getElementById("linkedin").value;
+
       const email = document.getElementById("email").value;
       const candidatos = JSON.parse(localStorage.getItem("candidatos") || "[]");
-      if (candidatos.some(c => c.email === email)) {
-        alert("Este email já está cadastrado. Por favor, apague sua conta atual antes de criar uma nova.");
+      if (candidatos.find(c => c.email === email)) {
+        alert("Este email já está cadastrado. Apague a conta anterior para cadastrar novamente.");
         return;
       }
-      const linkedinPattern = /^https:\/\/(www\.)?linkedin\.com\/.*$/;
-      if (!linkedinPattern.test(linkedin)) {
-        alert("Por favor, insira um link válido do LinkedIn.");
-        return;
-      }
-      if (!cvFileBase64) return alert("Por favor, aguarde o upload do currículo antes de enviar.");
+
       const candidato = {
         name: document.getElementById("name").value,
         email: email,
         password: document.getElementById("password").value,
-        linkedin: linkedin,
+        linkedin: document.getElementById("linkedin").value,
         skills: document.getElementById("skills").value,
         response: document.getElementById("response").value,
-        cv: cvFileBase64
+        cv: cvBase64
       };
+
       candidatos.push(candidato);
       localStorage.setItem("candidatos", JSON.stringify(candidatos));
       form.reset();
-      cvFileBase64 = "";
+      cvBase64 = "";
       carregarCandidatos();
     });
 
@@ -127,6 +171,7 @@
       list.innerHTML = "";
       const candidatos = JSON.parse(localStorage.getItem("candidatos") || "[]");
       const habilidades = {};
+
       candidatos.filter(c => c.skills.toLowerCase().includes(filtro.toLowerCase()))
         .forEach(c => {
           const div = document.createElement("div");
@@ -134,24 +179,25 @@
           div.innerHTML = `
             <strong>${c.name}</strong><br />
             <em>${c.email}</em><br />
-            <a href="${c.linkedin}" target="_blank">Ver LinkedIn</a>
+            <a href="${c.linkedin}" target="_blank">LinkedIn</a>
             <p><strong>Habilidades:</strong> ${c.skills}</p>
             <p><strong>Análise:</strong> ${avaliarResposta(c.response)}</p>
             <button onclick="abrirCV('${c.cv}')">Ver Currículo</button>
-            <button onclick="editarCandidato('${c.email}')">Editar</button>
-            <button onclick="apagarCandidato('${c.email}')">Apagar</button>
+            <button onclick="editar('${c.email}')">Editar</button>
+            <button onclick="apagar('${c.email}')">Apagar</button>
           `;
           list.appendChild(div);
-          c.skills.toLowerCase().split(',').forEach(skill => {
-            const s = skill.trim();
-            if (s) habilidades[s] = (habilidades[s] || 0) + 1;
+          c.skills.split(",").forEach(s => {
+            const skill = s.trim().toLowerCase();
+            if (skill) habilidades[skill] = (habilidades[skill] || 0) + 1;
           });
         });
+
       desenharGrafico(habilidades);
     }
 
-    function avaliarResposta(resposta) {
-      return resposta.toLowerCase().includes("lideran") ? "Potencial de Liderança" : "Responder bem";
+    function avaliarResposta(resp) {
+      return resp.toLowerCase().includes("lideran") ? "Potencial de Liderança" : "Resposta coerente";
     }
 
     function abrirCV(base64) {
@@ -159,28 +205,28 @@
       win.document.write(`<iframe src="${base64}" style="width:100%;height:100%"></iframe>`);
     }
 
-    function editarCandidato(email) {
-      const senha = prompt("Digite sua senha para editar seus dados:");
+    function editar(email) {
+      const senha = prompt("Digite sua senha:");
       const candidatos = JSON.parse(localStorage.getItem("candidatos") || "[]");
       const index = candidatos.findIndex(c => c.email === email && c.password === senha);
-      if (index === -1) return alert("Senha incorreta ou candidato não encontrado.");
+      if (index === -1) return alert("Senha incorreta.");
       const c = candidatos[index];
       document.getElementById("name").value = c.name;
       document.getElementById("email").value = c.email;
-      document.getElementById("skills").value = c.skills;
-      document.getElementById("response").value = c.response;
       document.getElementById("password").value = c.password;
       document.getElementById("linkedin").value = c.linkedin;
-      cvFileBase64 = c.cv;
+      document.getElementById("skills").value = c.skills;
+      document.getElementById("response").value = c.response;
+      cvBase64 = c.cv;
       candidatos.splice(index, 1);
       localStorage.setItem("candidatos", JSON.stringify(candidatos));
     }
 
-    function apagarCandidato(email) {
-      const senha = prompt("Digite sua senha para apagar seu cadastro:");
+    function apagar(email) {
+      const senha = prompt("Digite sua senha:");
       let candidatos = JSON.parse(localStorage.getItem("candidatos") || "[]");
       const index = candidatos.findIndex(c => c.email === email && c.password === senha);
-      if (index === -1) return alert("Senha incorreta ou candidato não encontrado.");
+      if (index === -1) return alert("Senha incorreta.");
       candidatos.splice(index, 1);
       localStorage.setItem("candidatos", JSON.stringify(candidatos));
       carregarCandidatos();
@@ -190,8 +236,11 @@
       if (window.myChart) window.myChart.destroy();
       window.myChart = new Chart(chartCanvas, {
         type: 'bar',
-        data: { labels: Object.keys(data), datasets: [{ label: 'Frequência de Habilidades', data: Object.values(data), backgroundColor: '#7f5af0' }] },
-        options: { responsive: true, plugins: { legend: { display: false } } }
+        data: {
+          labels: Object.keys(data),
+          datasets: [{ data: Object.values(data), label: "Habilidades", backgroundColor: "#7f5af0" }]
+        },
+        options: { plugins: { legend: { display: false } } }
       });
     }
 
